@@ -16,7 +16,7 @@ install:
 - cmd: cl /nologo /MT /O2 -c -Follthread.obj -Ic:\luajit\src c:\llthreads2\src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
 - cmd: link -dll -export:luaopen_llthreads2 -out:llthreads2.dll lua51.lib l52util.obj llthread.obj kernel32.lib
 
-- ps: Get-ChildItem C:\llthreads2.dll -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+- ps: Get-ChildItem .\llthreads2.dll -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 build: off
 before_deploy:
 - ps: |
