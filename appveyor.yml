@@ -11,7 +11,6 @@ install:
 
 - ps: pushd C:\
 - ps: Start-FileDownload 'https://github.com/fiendish/LuaJIT-build/releases/download/latest/lua51.lib'
-- ps: popd
 
 - cmd: cl /nologo /MT /O2 -c -Fol52util.obj -Ic:\luajit\src c:\llthreads2\src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
 - cmd: cl /nologo /MT /O2 -c -Follthread.obj -Ic:\luajit\src c:\llthreads2\src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
