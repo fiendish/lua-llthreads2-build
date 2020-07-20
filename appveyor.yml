@@ -5,17 +5,13 @@ skip_branch_with_pr: true
 clone_depth: 1
 install:
 - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86'
-
 - cmd: git clone -b v2.1 --single-branch --depth=1 https://github.com/fiendish/LuaJIT.git C:\luajit
 - cmd: git clone https://github.com/fiendish/lua-llthreads2.git C:\llthreads2
-
 - ps: pushd C:\
 - ps: Start-FileDownload 'https://github.com/fiendish/LuaJIT-build/releases/download/latest/lua51.lib'
-
 - cmd: cl /nologo /MT /O2 -c -Fol52util.obj -Ic:\luajit\src c:\llthreads2\src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
 - cmd: cl /nologo /MT /O2 -c -Follthread.obj -Ic:\luajit\src c:\llthreads2\src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
 - cmd: link -dll -export:luaopen_llthreads2 -out:llthreads2.dll lua51.lib l52util.obj llthread.obj kernel32.lib
-
 - ps: Get-ChildItem .\llthreads2.dll -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 build: off
 before_deploy:
