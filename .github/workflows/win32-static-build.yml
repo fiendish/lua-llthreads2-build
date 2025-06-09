@@ -31,15 +31,15 @@ jobs:
           path: lua-llthreads2/LuaJIT
           submodules: recursive
 
-      - name: Set up MSVC x86 build environment
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x86
-
       - name: Download prebuilt lua51.lib
         working-directory: lua-llthreads2
         run: |
           Invoke-WebRequest 'https://github.com/fiendish/LuaJIT-build/releases/download/latest/lua51.lib' -OutFile 'lua51.lib'
+
+      - name: Set up MSVC x86 build environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
 
       - name: Build lua-llthreads2
         working-directory: lua-llthreads2
