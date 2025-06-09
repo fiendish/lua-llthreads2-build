@@ -44,8 +44,8 @@ jobs:
       - name: Build lua-llthreads2
         working-directory: lua-llthreads2
         run: |
-          cl /nologo /MT /O2 -c -Fol52util.obj -ILuaJIT\src src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
-          cl /nologo /MT /O2 -c -Follthread.obj -ILuaJIT\src src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
+          cl /nologo /MT /O2 -c /Fo:l52util.obj -ILuaJIT\src src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
+          cl /nologo /MT /O2 -c /Fo:llthread.obj -ILuaJIT\src src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
           link -dll -export:luaopen_llthreads2 -out:llthreads2.dll lua51.lib l52util.obj llthread.obj kernel32.lib
 
       - name: Upload build artifact
