@@ -17,30 +17,36 @@ jobs:
 
     steps:
       - name: Checkout lua-llthreads2
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: fiendish/lua-llthreads2
           path: lua-llthreads2
           submodules: recursive
+
+      - name: Checkout LuaJIT
+        uses: actions/checkout@v4
+        with:
+          repository: fiendish/LuaJIT
+          ref: v2.1
+          submodules: recursive
+          path: lua-llthreads2/LuaJIT
 
       - name: Set up MSVC x86 build environment
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x86
 
-      - name: Clone LuaJIT
-        run: git clone -b v2.1 --single-branch --depth=1 https://github.com/fiendish/LuaJIT.git C:\luajit
-
       - name: Download prebuilt lua51.lib
+        working-directory: lua-llthreads2
         run: |
-          Invoke-WebRequest 'https://github.com/fiendish/LuaJIT-build/releases/download/latest/lua51.lib' -OutFile 'C:\lua51.lib'
+          Invoke-WebRequest 'https://github.com/fiendish/LuaJIT-build/releases/download/latest/lua51.lib' -OutFile 'lua51.lib'
 
       - name: Build lua-llthreads2
         working-directory: lua-llthreads2
         run: |
-          cl /nologo /MT /O2 -c -Fo:l52util.obj -Ic:\luajit\src src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
-          cl /nologo /MT /O2 -c -Fo:llthread.obj -Ic:\luajit\src src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
-          link -dll -export:luaopen_llthreads2 -out:llthreads2.dll c:\lua51.lib l52util.obj llthread.obj kernel32.lib
+          cl /nologo /MT /O2 -c -Fol52util.obj -ILuaJIT\src src\l52util.c -DLLTHREAD_MODULE_NAME=llthreads2
+          cl /nologo /MT /O2 -c -Follthread.obj -ILuaJIT\src src\llthread.c -DLLTHREAD_MODULE_NAME=llthreads2
+          link -dll -export:luaopen_llthreads2 -out:llthreads2.dll lua51.lib l52util.obj llthread.obj kernel32.lib
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
