@@ -28,8 +28,8 @@ jobs:
         with:
           repository: fiendish/LuaJIT
           ref: v2.1
-          submodules: recursive
           path: lua-llthreads2/LuaJIT
+          submodules: recursive
 
       - name: Set up MSVC x86 build environment
         uses: ilammy/msvc-dev-cmd@v1
